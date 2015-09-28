@@ -49,8 +49,7 @@ shinyApp(
                
                #ask the customer to choose an operator which can be "+" for addition, "-"for       
                #subtraction, "x" for multiplication, "/" for division 
-               selectInput("operator", "Please choose an operater",
-                            c("+","-","x","/")),
+              radioButtons("operator", "Please choose an operator: ",c("+","-","*","\057")),
                  
                # ask the customer to input a number or press the arrow button to get a number
                # if he doesn't choose, there will be a default number 
@@ -113,20 +112,13 @@ shinyApp(
             paste("You have input ", input$var2)
         })
         
-         # calculate according to the input or chosen numbers and the operator
-         cal=function(var1,operator,var2){
-        switch(operator,
-               "+"=var1+var2,
-               "-"=var1-var2,
-               "x"=var1*var2,
-               "/"=var1/var2)
-    }
+        
         
         # show the result automatically according to the calculation
         output$var3 <- renderText({ 
-            #formula <- paste0(input$var1, input$operator, input$var2)
-            #result <- eval(parse( text=formula))
-            paste("The result is ", cal(input$var1, input$operator, input$var2))
+            formula <- paste0(input$var1, input$operator, input$var2)
+            result <- eval(parse( text=formula))
+            paste("The result is ", result)
         })}
                 )
 ```
