@@ -1,0 +1,144 @@
+---
+title: "Simple Calculator"
+author: "Robin Zhang"
+date: "September 26, 2015"
+output:
+  ioslides_presentation:
+    keep_md: yes
+runtime: shiny
+---
+## Shiny Presentation
+
+========================================================
+
+- This simple calculator get two input numbers and one operator, then show you the result automatically!
+
+- It is interactive. You can try:)
+
+## Basic about the calculator
+
+========================================================
+
+- The operators include adding, subtracting, multiplication and division.
+
+- Numbers need to be input or press the arrow button to choose.
+
+- It can count integer，fractional and negative numbers.
+
+
+## The calculator! Try me:)
+
+========================================================
+```{r, echo = FALSE}
+shinyApp(
+    
+    ui = fluidPage(
+        titlePanel("Simple Calculator"),
+        
+        sidebarLayout(
+            sidebarPanel(
+                helpText("This app is to create a simple calculator 
+                         including adding, subtracting, multiplication and division!"),
+                
+               # ask the customer to input a number or press the arrow button to get a number
+               # if he doesn't choose, there will be a default number
+                numericInput("var1", 
+                             label = "Please input a number",
+                             value = 12
+                ),
+               
+               #ask the customer to choose an operator which can be "+" for addition, "-"for       
+               #subtraction, "x" for multiplication, "/" for division 
+               selectInput("operator", "Please choose an operater",
+                            c("+","-","x","/")),
+                 
+               # ask the customer to input a number or press the arrow button to get a number
+               # if he doesn't choose, there will be a default number 
+               numericInput("var2", 
+                             label = "Please input another number",
+                             value = 20
+                )
+                ),
+            
+            mainPanel(
+                #set two panels, one is the result panel, the other is documentation that 
+                #includes some basic document about this app
+                tabsetPanel(
+                    # the first panel of "Result" that will show the numbers the customer has
+                    # input or choose, the result for the calculation
+                    tabPanel(h2(strong("Result")),
+                             br(),
+                             textOutput("var1"),
+                             textOutput("operator"),
+                             textOutput("var2"),
+                             h2(strong(textOutput("var3"))) 
+                             
+                    ),
+                    
+                    # the other panel of "documentation" that will show some basic instruction
+                    # for the app
+                    tabPanel(h2(strong("Documentation")),
+                             br(),
+                             p("This is a calculator which can 
+                               help you to calculate any two 
+                               numbers for adding, subtracting, 
+                               multiplication and division."),
+                             p("You just need to input or choose two 
+                               numbers and choose an operator,
+                               the result will show in the right panel automatically."),
+                             p("Enjoy!")
+                             )))
+                )
+                    ),
+    
+    server = function(input, output) {
+        
+       
+        
+        
+        # show the first number chosen automatically
+        output$var1 <- renderText({ 
+            paste("You have input ", input$var1)
+            
+        })
+        
+        # show the chosen operator automatically
+        output$operator <- renderText({ 
+            paste("You have chosen an operator ", input$operator)
+            
+        })
+        
+        # show the second number chosen automatically
+        output$var2 <- renderText({ 
+            paste("You have input ", input$var2)
+        })
+        
+         # calculate according to the input or chosen numbers and the operator
+         cal=function(var1,operator,var2){
+        switch(operator,
+               "+"=var1+var2,
+               "-"=var1-var2,
+               "x"=var1*var2,
+               "/"=var1/var2)
+    }
+        
+        # show the result automatically according to the calculation
+        output$var3 <- renderText({ 
+            #formula <- paste0(input$var1, input$operator, input$var2)
+            #result <- eval(parse( text=formula))
+            paste("The result is ", cal(input$var1, input$operator, input$var2))
+        })}
+                )
+```
+
+## Futher discussion
+
+========================================================
+
+- It can add another features like sin, cos, square, square root and so on in the future.
+- It can add some error control hints in the future.
+- It can add memory and clear features.
+ 
+
+
+
